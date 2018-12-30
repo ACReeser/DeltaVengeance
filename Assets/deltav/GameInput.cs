@@ -10,24 +10,33 @@ public class GameInput : MonoBehaviour {
 	}
 
     public CameraManager cameraManager;
+    public CanvasManager canvasMan;
     private CelestialBodyClickTarget lastTarget;
 	
 	// Update is called once per frame
 	void Update () {
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hit))
+        if (!cameraManager.Focused)
         {
-            if (hit.collider && hit.collider != null)
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit))
             {
-                var cbct = hit.collider.transform.GetComponent<CelestialBodyClickTarget>();
-                if (cbct != null)
+                if (hit.collider && hit.collider != null)
                 {
-                    cbct.MouseOver();
-                    lastTarget = cbct;
-                    if (Input.GetMouseButtonUp(0))
+                    var cbct = hit.collider.transform.GetComponent<CelestialBodyClickTarget>();
+                    if (cbct != null)
                     {
-                        cameraManager.FocusOn(cbct);
+                        cbct.MouseOver();
+                        lastTarget = cbct;
+                        if (Input.GetMouseButtonUp(0))
+                        {
+                            WhenNotHoverOverCelestialBody();
+                            cameraManager.FocusOn(cbct);
+                        }
+                    }
+                    else
+                    {
+                        WhenNotHoverOverCelestialBody();
                     }
                 }
                 else
@@ -36,12 +45,8 @@ public class GameInput : MonoBehaviour {
                 }
             }
             else
-            {
                 WhenNotHoverOverCelestialBody();
-            }
         }
-        else
-            WhenNotHoverOverCelestialBody();
 
         if (Input.GetKeyUp(KeyCode.Escape))
         {

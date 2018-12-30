@@ -15,50 +15,6 @@ public interface IEngineBridge
     event TurnResolvedEvent OnCommandsResolved;
 }
 
-public class LocalAIEngineBridge: MonoBehaviour, IEngineBridge
-{
-    public SolarSystem CurrentState { get; private set; }
-    public PhasedCommands PlayerCommands;
-    public IEnumerator SubmitCommands(PhasedCommands commands)
-    {
-        PlayerCommands = commands;
-        yield return true;
-    }
-    public event TurnResolvedEvent OnCommandsResolved;
-
-    void Start()
-    {
-        CurrentState = DVEngine.GetNewGame(1, 0);
-    }
-
-    void Update()
-    {
-        if (PlayerCommands != null)
-        {
-            List<PhasedCommands> commands = new List<PhasedCommands>() { PlayerCommands };
-            var aiCommands = GetAICommands();
-            if (aiCommands != null)
-            {
-                commands.Add(aiCommands);
-            }
-            var resolution = new DVEngine().Tick(CurrentState, commands.ToArray());
-            PlayerCommands = null;
-            if (OnCommandsResolved != null)
-                OnCommandsResolved(resolution);
-        }
-    }
-
-    private PhasedCommands GetAICommands()
-    {
-        return null;
-    }
-
-    public IEnumerator GetSolarSystem()
-    {
-        yield return null;
-    }
-}
-
 public class TurnResolution
 {
     public SolarSystem newSolarSystemState;

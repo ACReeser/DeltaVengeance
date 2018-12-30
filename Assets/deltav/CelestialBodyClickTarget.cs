@@ -1,10 +1,17 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CelestialBodyClickTarget : MonoBehaviour {
     public MeshRenderer render;
+    
+    public Planet GetTiedPlanet()
+    {
+        var planetName = transform.parent.parent.parent.name;
+        return PhaseManager.S.State.Planets.Values.FirstOrDefault(x => x.Name.ToLowerInvariant() == planetName.ToLowerInvariant());
+    }
 
 	// Use this for initialization
 	void Start () {

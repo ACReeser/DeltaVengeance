@@ -3,8 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraManager : MonoBehaviour {
+public class CameraManager : MonoBehaviour
+{
+    public CanvasManager canvasMan;
     public Transform sunPivot;
+    public bool Focused { get; private set; }
 
 	// Use this for initialization
 	void Start () {
@@ -22,6 +25,8 @@ public class CameraManager : MonoBehaviour {
         Camera.main.transform.parent.localPosition = Vector3.zero;
         Camera.main.transform.localPosition = new Vector3(Camera.main.transform.localPosition.x, 0, -1);
         Camera.main.transform.localRotation = Quaternion.identity;
+        Focused = true;
+        canvasMan.FocusPlanet(cbct.GetTiedPlanet());
     }
 
     internal void ExitPlanetFocus()
@@ -30,6 +35,8 @@ public class CameraManager : MonoBehaviour {
         Camera.main.transform.parent.localPosition = Vector3.zero;
         Camera.main.transform.localPosition = new Vector3(Camera.main.transform.localPosition.x, Camera.main.transform.localPosition.y, -40);
 
+        Focused = false;
+        canvasMan.UnFocusPlanet();
     }
 
     public float distance = 1.0f;

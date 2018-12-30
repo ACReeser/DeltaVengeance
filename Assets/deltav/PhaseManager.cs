@@ -21,11 +21,12 @@ public class PhaseManager : MonoBehaviour {
     public TurnResolution LastTurnResolution, PendingTurnResolution;
     public SolarSystem State;
     public event PhaseChange OnPhaseChange;
+    public LocalAIEngineBridge LocalAIEngineBridge;
 
     // Use this for initialization
     void Start () {
         S = this;
-        EngineBridge = new LocalAIEngineBridge();
+        EngineBridge = LocalAIEngineBridge;
         EngineBridge.OnCommandsResolved += EngineBridge_OnCommandsResolved;
         StartCoroutine(GetSolarSystem());
         CurrentCommands = new PhasedCommands();
