@@ -40,6 +40,7 @@ public class CanvasManager : MonoBehaviour {
     internal void UnFocusPlanet()
     {
         PlanetPanel.gameObject.SetActive(false);
+        UnFocusCity();
     }
 
     internal void FocusCity(City c)
@@ -50,5 +51,10 @@ public class CanvasManager : MonoBehaviour {
     internal void UnFocusCity()
     {
         CityPanel.gameObject.SetActive(false);
+    }
+
+    public void EndTurnButtonClick()
+    {
+        PhaseManager.S.EndTurn();
     }
 }

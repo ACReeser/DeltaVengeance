@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public enum Phase
@@ -22,6 +23,7 @@ public class PhaseManager : MonoBehaviour {
     public SolarSystem State;
     public event PhaseChange OnPhaseChange;
     public LocalAIEngineBridge LocalAIEngineBridge;
+    internal Guid PlayerID;
 
     // Use this for initialization
     void Start () {
@@ -39,6 +41,7 @@ public class PhaseManager : MonoBehaviour {
     {
         yield return EngineBridge.GetSolarSystem();
         State = EngineBridge.CurrentState;
+        PlayerID = State.Players.Keys.First();
     }
 
     private void EngineBridge_OnCommandsResolved(TurnResolution resolution)
