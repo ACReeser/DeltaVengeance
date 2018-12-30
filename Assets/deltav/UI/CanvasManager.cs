@@ -9,9 +9,11 @@ public class CanvasManager : MonoBehaviour {
     public RectTransform EndTurnButton;
 
     public RectTransform PlanetPanel;
+    public Text PlanetName;
 
 
     public RectTransform CityPanel;
+    public Text CityName;
 
     // Use this for initialization
     void Start () {
@@ -35,6 +37,7 @@ public class CanvasManager : MonoBehaviour {
     internal void FocusPlanet(Planet planet)
     {
         PlanetPanel.gameObject.SetActive(true);
+        PlanetName.text = " > " +planet.Name.ToUpperInvariant();
     }
 
     internal void UnFocusPlanet()
@@ -46,6 +49,7 @@ public class CanvasManager : MonoBehaviour {
     internal void FocusCity(City c)
     {
         CityPanel.gameObject.SetActive(true);
+        CityName.text = " > "+c.Name.ToUpperInvariant();
     }
 
     internal void UnFocusCity()

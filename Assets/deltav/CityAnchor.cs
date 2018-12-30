@@ -23,7 +23,7 @@ public class CityAnchor : MonoBehaviour {
     {
         var planetName = transform.parent.parent.parent.parent.parent.name;
         var planet = PhaseManager.S.State.Planets.Values.FirstOrDefault(x => x.Name.ToLowerInvariant() == planetName.ToLowerInvariant());
-        return planet.Empires[PhaseManager.S.PlayerID].Cities.Values.FirstOrDefault(x => x.Name.ToLowerInvariant() == CityName);
+        return planet.Empires[PhaseManager.S.PlayerID].Cities.Values.FirstOrDefault(x => x.Name.ToLowerInvariant() == CityName.ToLowerInvariant());
 
     }
 }
