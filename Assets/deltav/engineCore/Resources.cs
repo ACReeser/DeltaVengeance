@@ -13,7 +13,7 @@ public interface IStockpile
 public interface ICapability
 {
     int Assembly { get; set; }
-    int Energy { get; set; }
+    decimal Energy { get; set; }
     int TonnesToOrbit { get; set; }
 }
 
@@ -23,7 +23,7 @@ public interface ICapability
 public class Register : IStockpile, ICapability
 {
     public int Assembly { get; set; }
-    public int Energy { get; set; }
+    public decimal Energy { get; set; }
     public int Metal { get; set; }
     public decimal NuclearCores { get; set; }
     public int TonnesToOrbit { get; set; }
@@ -38,5 +38,15 @@ public class Register : IStockpile, ICapability
         TonnesToOrbit += other.TonnesToOrbit;
         Population += other.Population;
         Research += other.Research;
+    }
+
+    internal bool EqualToOrGreaterThan(Register other)
+    {
+        return Assembly >= other.Assembly &&
+            Energy >= other.Energy &&
+            NuclearCores >= other.NuclearCores &&
+            TonnesToOrbit >= other.TonnesToOrbit &&
+            Population >= other.Population &&
+            Research >= other.Research;
     }
 }

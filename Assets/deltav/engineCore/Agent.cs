@@ -1,54 +1,29 @@
 ﻿
 using System;
+using System.Collections;
 using System.Collections.Generic;
-
-
-public abstract class Command
-{
-    public abstract void Execute(SolarSystem system);
-}
-
-public class LaunchPayloadCommand : Command
-{
-    public LaunchPayloadCommand(Payload p, Planet planet)
-    {
-
-    }
-
-    public override void Execute(SolarSystem system)
-    {
-
-    }
-}
-public class BuildInfrastructureInCityCommand: Command
-{
-    public BuildInfrastructureInCityCommand(Infrastructure i, City c)
-    {
-
-    }
-
-    public override void Execute(SolarSystem system)
-    {
-
-    }
-}
-
-public class BuildPayloadOnPlanetCommand : Command
-{
-    public BuildPayloadOnPlanetCommand(Payload p, Planet planet)
-    {
-
-    }
-
-    public override void Execute(SolarSystem system)
-    {
-
-    }
-}
+using System.Linq;
 
 public class Agent {
     public string Name;
-    public List<Command> PreviousMoves;
-    public List<Command> MoveQueue;
+    public Stack<Command> PreviousMoves;
+    public PhasedCommands Commands;
     public Guid ID;
+    public Difficulty Difficulty;
+    public Dictionary<Guid, Rocket> Rockets;
+}
+
+public class PhasedCommands
+{
+    public Guid PlayerID;
+    public Queue<LaunchPayloadCommand> LaunchPayloads = new Queue<LaunchPayloadCommand>();
+    public Queue<BuildInCityCommand> BuildInfrastructure = new Queue<BuildInCityCommand>();
+    public Queue<BuildPayloadOnPlanetCommand> BuildPayloads = new Queue<BuildPayloadOnPlanetCommand>();
+
+    public void Execute(SolarSystem system)
+    {
+        foreach(var e in LaunchPayloads) { e.Execute(system); }
+        foreach(var e in BuildPayloads) { e.Execute(system); }
+        foreach(var e in BuildInfrastructure) { e.Execute(system); }
+    }
 }

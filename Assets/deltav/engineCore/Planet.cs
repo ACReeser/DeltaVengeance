@@ -5,21 +5,34 @@ using UnityEngine;
 
 
 public class Planet  {
+    public Guid ID;
+    public string Name;
     public Dictionary<Guid, Empire> Empires;
 }
 
 public class Empire
 {
-    public List<City> Cities;
+    public Dictionary<Guid, City> Cities;
 
-    public List<OrbitalInfrastructure> OrbitalInfrastructure;
+    public Dictionary<Guid, OrbitalInfrastructure> OrbitalInfrastructure;
 
-    public List<Payload> GroundedPayloads;
-    public List<Payload> OrbitingPayloads;
+    public Dictionary<Guid, Payload> GroundedPayloads;
+    public Dictionary<Guid, Payload> OrbitingPayloads;
 
     public Agent Player;
 
     public string Name;
 
     public Register CurrentResources;
+    public Register PlannedResources;
+
+    internal bool CanBuild(BuildableType type)
+    {
+        return CurrentResources.EqualToOrGreaterThan(GameplayData.DifficultyDataset[Player.Difficulty][type].Costs);
+    }
+    internal bool CanBuildInCity(Guid cityID, BuildableType type)
+    {
+        var city = Cities[cityID];
+        return CanBuild(type) && city.CanBuild(type);
+    }
 }
