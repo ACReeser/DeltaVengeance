@@ -55,7 +55,10 @@ public class DVEngine {
         {
             Cities = new Dictionary<Guid, City>(),
             OrbitalInfrastructure = new Dictionary<Guid, OrbitalInfrastructure>(),
-            CurrentResources = new Register(),
+            CurrentResources = new Register() {
+                Assembly = 40,
+                Metal = 20
+            },
             Name = "UN",
             GroundedPayloads = new Dictionary<Guid, Payload>(),
             OrbitingPayloads = new Dictionary<Guid, Payload>(),

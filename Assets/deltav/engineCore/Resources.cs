@@ -34,6 +34,7 @@ public class Register : IStockpile, ICapability
     {
         Assembly += other.Assembly;
         Energy += other.Energy;
+        Metal += other.Metal;
         NuclearCores += other.NuclearCores;
         TonnesToOrbit += other.TonnesToOrbit;
         Population += other.Population;

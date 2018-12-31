@@ -31,7 +31,73 @@ public static class GameplayData
                             Assembly = 5
                         }
                     }
-                }, {
+                },
+                {
+                    BuildableType.NuclearPlant, new BuildableData(){
+                        Class = typeof(Infrastructure),
+                        Outputs = new Register(){
+                            Energy = 3
+                        },
+                        Costs = new Register(){
+                            Metal = 20,
+                            Energy = 0,
+                            Assembly = 30,
+                            NuclearCores = 1
+                        }
+                    }
+                },
+                {
+                    BuildableType.Factory, new BuildableData(){
+                        Class = typeof(Infrastructure),
+                        Outputs = new Register(){
+                            Assembly = 10
+                        },
+                        Costs = new Register(){
+                            Metal = 10,
+                            Energy = 1,
+                            Assembly = 10
+                        }
+                    }
+                },
+                {
+                    BuildableType.Farm, new BuildableData(){
+                        Class = typeof(Infrastructure),
+                        Outputs = new Register(){
+                            Population = 3
+                        },
+                        Costs = new Register(){
+                            Metal = 10,
+                            Energy = 1,
+                            Assembly = 5
+                        }
+                    }
+                },
+                {
+                    BuildableType.SolarPlant, new BuildableData(){
+                        Class = typeof(Infrastructure),
+                        Outputs = new Register(){
+                            Energy = 1
+                        },
+                        Costs = new Register(){
+                            Metal = 10,
+                            Assembly = 10,
+                        }
+                    }
+                },
+                {
+                    BuildableType.LaunchFacility, new BuildableData(){
+                        Class = typeof(Infrastructure),
+                        Outputs = new Register(){
+                            Assembly = 10
+                        },
+                        Costs = new Register(){
+                            Metal = 20,
+                            Energy = 1,
+                            Assembly = 30,
+                        }
+                    }
+                },
+                {
                     BuildableType.Propellant, new BuildableData(){
                         Class = typeof(Payload),
                         Outputs = new Register(){
@@ -41,7 +107,8 @@ public static class GameplayData
                         },
                         WeightTon = 10
                     }
-                },{
+                },
+                {
                     BuildableType.Cargo, new BuildableData(){
                         Class = typeof(Payload),
                         Outputs = new Register(){

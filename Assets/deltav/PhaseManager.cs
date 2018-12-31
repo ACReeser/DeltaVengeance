@@ -41,6 +41,7 @@ public class PhaseManager : MonoBehaviour {
     {
         yield return EngineBridge.GetSolarSystem();
         State = EngineBridge.CurrentState;
+        State.Hydrate();
         PlayerID = State.Players.Keys.First();
     }
 

@@ -33,5 +33,22 @@ public class SolarSystem {
     {
         return Planets[planet].Empires[player].Cities[city].Infrastructure[infra];
     }
+
+    internal void Hydrate()
+    {
+        foreach(Planet p in Planets.Values)
+        {
+            foreach(var kvp in p.Empires)
+            {
+                var player = Players[kvp.Key];
+                kvp.Value.Player = player;
+
+                foreach(City c in kvp.Value.Cities.Values)
+                {
+                    c.Player = player;
+                }
+            }
+        }
+    }
 }
 
