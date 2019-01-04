@@ -79,7 +79,8 @@ public class BuildInCityCommand : BuildOnPlanetCommand
 
     internal override void Build(SolarSystem system, Empire empire, BuildableData data)
     {
-        var newBuildable = Activator.CreateInstance(data.Class) as Buildable;
+        Buildable newBuildable = Activator.CreateInstance(data.Class) as Buildable;
+        newBuildable.Type = type;
         newBuildable.ID = Guid.NewGuid();
         empire.Cities[city].Infrastructure.Add(newBuildable.ID, newBuildable as Infrastructure);
     }

@@ -29,6 +29,14 @@ public class City{
             return sum;
         });
     }
+    public decimal GetUsedEnergy()
+    {
+        return Infrastructure.Values.Aggregate(0m, (sum, building) =>
+        {
+            sum += GameplayData.DifficultyDataset[Player.Difficulty][building.Type].Costs.Energy;
+            return sum;
+        });
+    }
 
     internal bool CanBuild(BuildableType type)
     {

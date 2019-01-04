@@ -27,7 +27,28 @@ public class DVEngine {
     {
         foreach(var command in commands)
         {
-            command.Execute(s);
+            command.ExecuteLaunchPayloads(s);
+            command.ExecuteBuildPayloads(s);
+            command.ExecuteBuildInfrastructure(s);
+        }
+
+        foreach(var planet in s.Planets.Values)
+        {
+            foreach(var empireKVP in planet.Empires)
+            {
+                empireKVP.Value.CurrentResources.ResetCapability();
+                foreach (var city in empireKVP.Value.Cities.Values)
+                {
+                    var perTurn = city.GetResourcesPerTurnSummary();
+                    empireKVP.Value.CurrentResources.AddToStockpile(perTurn);
+                    empireKVP.Value.CurrentResources.AddToCapability(perTurn);
+                }
+            }
+        }
+
+        foreach (var command in commands)
+        {
+            command.ExecuteBuildInfrastructure(s);
         }
 
         return new TurnResolution()

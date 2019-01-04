@@ -41,6 +41,13 @@ public class Register : IStockpile, ICapability
         Research += other.Research;
     }
 
+    internal void ResetCapability()
+    {
+        Assembly = 0;
+        Energy = 0;
+        TonnesToOrbit = 0;
+    }
+
     internal bool EqualToOrGreaterThan(Register other)
     {
         return Assembly >= other.Assembly &&
@@ -49,5 +56,38 @@ public class Register : IStockpile, ICapability
             TonnesToOrbit >= other.TonnesToOrbit &&
             Population >= other.Population &&
             Research >= other.Research;
+    }
+
+    internal void AddToCapability(ICapability other)
+    {
+        Assembly += other.Assembly;
+        Energy += other.Energy;
+        TonnesToOrbit += other.TonnesToOrbit;
+    }
+
+    internal void AddToStockpile(IStockpile other)
+    {
+        Metal += other.Metal;
+        NuclearCores += other.NuclearCores;
+        Population += other.Population;
+        Research += other.Research;
+    }
+
+    internal void SetCapability(ICapability other)
+    {
+        Assembly = other.Assembly;
+        Energy = other.Energy;
+        TonnesToOrbit = other.TonnesToOrbit;
+    }
+
+    internal void Subtract(Register other)
+    {
+        Assembly -= other.Assembly;
+        Energy -= other.Energy;
+        Metal -= other.Metal;
+        NuclearCores -= other.NuclearCores;
+        TonnesToOrbit -= other.TonnesToOrbit;
+        Population -= other.Population;
+        Research -= other.Research;
     }
 }

@@ -20,10 +20,16 @@ public class PhasedCommands
     public Queue<BuildInCityCommand> BuildInfrastructure = new Queue<BuildInCityCommand>();
     public Queue<BuildPayloadOnPlanetCommand> BuildPayloads = new Queue<BuildPayloadOnPlanetCommand>();
 
-    public void Execute(SolarSystem system)
+    public void ExecuteLaunchPayloads(SolarSystem system)
     {
-        foreach(var e in LaunchPayloads) { e.Execute(system); }
-        foreach(var e in BuildPayloads) { e.Execute(system); }
-        foreach(var e in BuildInfrastructure) { e.Execute(system); }
+        foreach (var e in LaunchPayloads) { e.Execute(system); }
+    }
+    public void ExecuteBuildPayloads(SolarSystem system)
+    {
+        foreach (var e in BuildPayloads) { e.Execute(system); }
+    }
+    public void ExecuteBuildInfrastructure(SolarSystem system)
+    {
+        foreach (var e in BuildInfrastructure) { e.Execute(system); }
     }
 }

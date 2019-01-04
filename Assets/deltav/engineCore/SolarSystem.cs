@@ -34,6 +34,9 @@ public class SolarSystem {
         return Planets[planet].Empires[player].Cities[city].Infrastructure[infra];
     }
 
+    /// <summary>
+    /// fills in objects given their guids
+    /// </summary>
     internal void Hydrate()
     {
         foreach(Planet p in Planets.Values)

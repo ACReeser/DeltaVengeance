@@ -12,6 +12,7 @@ public enum Phase
     Executing
 }
 public delegate void PhaseChange(Phase NewPhase);
+public delegate void TurnResolved(SolarSystem NewState);
 
 public class PhaseManager : MonoBehaviour {
 
@@ -22,8 +23,21 @@ public class PhaseManager : MonoBehaviour {
     public TurnResolution LastTurnResolution, PendingTurnResolution;
     public SolarSystem State;
     public event PhaseChange OnPhaseChange;
+    public event TurnResolved OnTurnResolved;
     public LocalAIEngineBridge LocalAIEngineBridge;
     internal Guid PlayerID;
+
+    /// <summary>
+    /// convenience getter for difficulty data
+    /// </summary>
+    internal DifficultyData DifficultyData
+    {
+        get
+        {
+            return GameplayData.DifficultyDataset[State.Players[PlayerID].Difficulty];
+        }
+    }
+        
 
     // Use this for initialization
     void Start () {
@@ -57,10 +71,13 @@ public class PhaseManager : MonoBehaviour {
 
     private IEnumerator RenderResolution(TurnResolution resolution)
     {
-        yield return null;
+        yield return new WaitForSeconds(1f);
+        State = LastTurnResolution.newSolarSystemState;
         CurrentPhase = Phase.Planning;
         if (OnPhaseChange != null)
             OnPhaseChange(CurrentPhase);
+        if (OnTurnResolved != null)
+            OnTurnResolved(State);
     }
 
     // Update is called once per frame
@@ -74,9 +91,19 @@ public class PhaseManager : MonoBehaviour {
 
     public void EndTurn()
     {
-        EngineBridge.SubmitCommands(CurrentCommands);
+        StartCoroutine(SubmitCommands());
+    }
+    public IEnumerator SubmitCommands()
+    {
+        yield return StartCoroutine(EngineBridge.SubmitCommands(CurrentCommands));
         CurrentPhase = Phase.WaitingOnOtherPlayers;
         if (OnPhaseChange != null)
             OnPhaseChange(CurrentPhase);
+    }
+
+    internal void BuildInfrastructure(Guid focusedPlanetID, Guid focusedCityID, BuildableType selectedType)
+    {
+        CurrentCommands.BuildInfrastructure.Enqueue(new BuildInCityCommand(focusedPlanetID, PlayerID, focusedCityID, selectedType));
+        State.GetEmpire(focusedPlanetID, PlayerID).CurrentResources.Subtract(DifficultyData[selectedType].Costs);
     }
 }
