@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class CelestialBodyClickTarget : MonoBehaviour {
     public MeshRenderer render;
+    public Transform OrbitAnchor;
     
     public Planet GetTiedPlanet()
     {

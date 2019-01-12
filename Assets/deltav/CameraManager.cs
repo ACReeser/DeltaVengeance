@@ -5,13 +5,16 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
+    public Camera DrydockCamera;
     public CanvasManager canvasMan;
     public Transform sunPivot;
     public bool Focused { get; private set; }
 
+    private Transform planetTerrestrialAnchor, planetOrbitAnchor;
+
 	// Use this for initialization
 	void Start () {
-		
+        ToggleDrydock(false);
 	}
 	
 	// Update is called once per frame
@@ -21,12 +24,39 @@ public class CameraManager : MonoBehaviour
 
     internal void FocusOn(CelestialBodyClickTarget cbct)
     {
-        Camera.main.transform.parent.SetParent(cbct.transform);
+        planetTerrestrialAnchor = cbct.transform;
+        this.FocusTerrestrial();
+        Focused = true;
+        canvasMan.FocusPlanet(cbct.GetTiedPlanet());
+        planetOrbitAnchor = cbct.OrbitAnchor;
+    }
+    internal void FocusTerrestrial()
+    {
+        Camera.main.nearClipPlane = 0.4f;
+        Camera.main.transform.parent.SetParent(planetTerrestrialAnchor);
         Camera.main.transform.parent.localPosition = Vector3.zero;
         Camera.main.transform.localPosition = new Vector3(Camera.main.transform.localPosition.x, 0, -1);
         Camera.main.transform.localRotation = Quaternion.identity;
-        Focused = true;
-        canvasMan.FocusPlanet(cbct.GetTiedPlanet());
+    }
+    internal void FocusOrbital(bool showAssets = true)
+    {
+        Camera.main.nearClipPlane = 0.1f;
+        Camera.main.transform.parent.SetParent(planetOrbitAnchor);
+        Camera.main.transform.parent.localPosition = Vector3.zero;
+        Camera.main.transform.localPosition = new Vector3(Camera.main.transform.localPosition.x, 0, -0.3f);
+        planetOrbitAnchor.GetChild(0).gameObject.SetActive(showAssets);
+    }
+    internal void ToggleDrydock(bool state)
+    {
+        if (state)
+        {
+            FocusOrbital(false);
+        }
+        else if (planetOrbitAnchor != null)
+        {
+            planetOrbitAnchor.GetChild(0).gameObject.SetActive(true);
+        }
+        DrydockCamera.enabled = state;
     }
 
     internal void ExitPlanetFocus()
@@ -69,6 +99,8 @@ public class CameraManager : MonoBehaviour
             Quaternion toRotation = Quaternion.Euler(rotationXAxis, rotationYAxis, 0);
             Quaternion rotation = toRotation;
             Camera.main.transform.parent.rotation = toRotation;
+            //if (DrydockCamera.enabled)
+            DrydockCamera.transform.parent.rotation = toRotation;
         }
     }
     public static float ClampAngle(float angle, float min, float max)

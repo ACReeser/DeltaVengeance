@@ -114,6 +114,14 @@ public class CostBenefitView
 }
 
 [Serializable]
+public class OrbitalView
+{
+    public RectTransform ParentFrame;
+    public ConstructionView Infrastructure;
+    public ConstructionView Payloads;
+}
+
+[Serializable]
 public class NewInfrastructureView
 {
     public RectTransform NewCityConstructionPanel, ChooseKindParent;
@@ -174,6 +182,7 @@ public class NewInfrastructureView
 }
 
 public class CanvasManager : MonoBehaviour {
+    public CameraManager cameraMan;
     public Text PhaseText;
     public RectTransform EndTurnButton;
 
@@ -188,6 +197,7 @@ public class CanvasManager : MonoBehaviour {
 
     public Planet FocusedPlanet;
     public City FocusedCity;
+    public OrbitalView FocusedOrbital;
 
     // Use this for initialization
     void Start () {
@@ -236,6 +246,8 @@ public class CanvasManager : MonoBehaviour {
         FocusedPlanet = null;
         PlanetPanel.gameObject.SetActive(false);
         UnFocusCity();
+        FocusedOrbital.ParentFrame.gameObject.SetActive(false);
+        cameraMan.ToggleDrydock(false);
     }
 
     internal void FocusCity(City c)
@@ -244,6 +256,8 @@ public class CanvasManager : MonoBehaviour {
         CityPanel.gameObject.SetActive(true);
         CityRegister.Fill(FocusedCity);
         CityConstruction.Fill(FocusedCity);
+        FocusedOrbital.ParentFrame.gameObject.SetActive(false);
+        cameraMan.FocusTerrestrial();
     }
 
     internal void UnFocusCity()
@@ -273,5 +287,18 @@ public class CanvasManager : MonoBehaviour {
         PlanetRegister.Fill(FocusedPlanet);
         CityRegister.Fill(FocusedCity);
         CityConstruction.Fill(FocusedCity);
+    }
+
+    public void OpenOrbitalAssets()
+    {
+        FocusedOrbital.ParentFrame.gameObject.SetActive(true);
+        CityPanel.gameObject.SetActive(false);
+        cameraMan.FocusOrbital();
+        cameraMan.ToggleDrydock(false);
+    }
+
+    public void OpenInterplanetaryLaunch()
+    {
+        cameraMan.ToggleDrydock(true);
     }
 }
